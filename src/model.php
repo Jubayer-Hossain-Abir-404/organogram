@@ -58,7 +58,8 @@ class Model{
     private function query($sql){
         return $this->_dbcon->query($sql);
     }
-    
+
+
     /**
      * fetch : get the first result 
      * @param mixed $result
@@ -108,6 +109,23 @@ class Model{
      * ToDo:: // do something
      */
 
+     public function insertDepartment($rows){
+        $count=0;
+        foreach($rows as $row){
+            $name =  $row[0];
+            $sql = "INSERT INTO department (name)
+            VALUES ('$name')";
+            $result = $this->query($sql);
+            if($result){
+                $count++;
+            }
+        }
+        if($count==count($rows)){
+            return "All the departments saved successfully";
+        }else{
+            return "Failed to save data";
+        }
+     }
     public function department(){
         // do something
     }

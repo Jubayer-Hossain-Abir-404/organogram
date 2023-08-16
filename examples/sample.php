@@ -16,3 +16,34 @@ echo "</pre>";
 // echo "<pre>"; 
 // print_r($data); 
 // echo "</pre>"; 
+
+$arr = array(
+    array('id' => 100, 'parentid' => 0, 'name' => 'a'),
+    array('id' => 101, 'parentid' => 100, 'name' => 'a'),
+    array('id' => 102, 'parentid' => 101, 'name' => 'a'),
+    array('id' => 103, 'parentid' => 101, 'name' => 'a'),
+);
+
+$new = array();
+foreach ($arr as $a) {
+    $new[$a['parentid']][] = $a;
+}
+echo "<pre>";
+print_r($new);
+echo "</pre>";
+$tree = createTree($new, array($arr[0]));
+echo "<pre>";
+print_r($tree);
+echo "</pre>";
+
+function createTree(&$list, $parent)
+{
+    $tree = array();
+    foreach ($parent as $k => $l) {
+        if (isset($list[$l['id']])) {
+            $l['children'] = createTree($list, $list[$l['id']]);
+        }
+        $tree[] = $l;
+    }
+    return $tree;
+}
