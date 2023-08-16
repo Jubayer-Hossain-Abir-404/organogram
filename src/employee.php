@@ -39,6 +39,18 @@ use Organogram\model;
         return Model::get()->employees();
 
     }
+
+    function setEmployeeMapping(){
+        $filename = "../inputFiles/employee_mapping.csv";
+        $fp = fopen($filename, "r");
+        if (!$fp) {
+            return "Unable to open file";
+        }
+
+        $csv_data = array_map('str_getcsv', file($filename)); // reads the csv file in php array
+
+        return Model::get()->insertEmployeeMapping($csv_data);
+    }
     
     /**
      * TODO:: Complete this method and get all the id's under an employee

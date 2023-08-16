@@ -146,6 +146,26 @@ class Model{
             return "Failed to save data";
         }
     }
+
+    public function insertEmployeeMapping($rows)
+    {
+        $count = 0;
+        foreach ($rows as $row) {
+            $name = $row[0];
+            $position = $row[1];
+            $sql = "INSERT INTO role (name, position)
+            VALUES ('$name','$position')";
+            $result = $this->query($sql);
+            if ($result) {
+                $count++;
+            }
+        }
+        if ($count == count($rows)) {
+            return "All the roles saved successfully";
+        } else {
+            return "Failed to save data";
+        }
+    }
     public function department(){
         // do something
     }
