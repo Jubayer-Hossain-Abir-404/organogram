@@ -64,6 +64,24 @@ use Organogram\model;
      */
     function getEmployeeUnerMe($employeeId, $departmentId ){
         // write code 
+        $immediate_employee_under_me = Model::get()->employeeUnderMe($employeeId, $departmentId); // immdeiate employees are fetched
+        $employees = array();
+
+        foreach ($immediate_employee_under_me as $employee) {
+            $subordinates = $this->getEmployeeUnerMe($employee['employee_id'], $employee['department_id']); // immediate employess are fetched recursively
+            if (!empty($subordinates)) { // checks if subordinates exist if not then only save employee id
+                $employeeData = array(
+                    'employee_id' => $employee['employee_id'],
+                    'employee_under' => $subordinates
+                );
+            } else {
+                $employeeData = array(
+                    'employee_id' => $employee['employee_id']
+                );
+            }
+            $employees[] = $employeeData;
+        }
+        return $employees;
     }
 
    

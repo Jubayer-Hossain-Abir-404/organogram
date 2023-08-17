@@ -151,17 +151,20 @@ class Model{
     {
         $count = 0;
         foreach ($rows as $row) {
-            $name = $row[0];
-            $position = $row[1];
-            $sql = "INSERT INTO role (name, position)
-            VALUES ('$name','$position')";
+            $employee_id = $row[0];
+            $department_id = $row[1];
+            $role_id = $row[2];
+            $immediate_senior = $row[3];
+
+            $sql = "INSERT INTO employee_mapping (employee_id, department_id, role_id, immediate_senior)
+            VALUES ('$employee_id','$department_id','$role_id','$immediate_senior')";
             $result = $this->query($sql);
             if ($result) {
                 $count++;
             }
         }
         if ($count == count($rows)) {
-            return "All the roles saved successfully";
+            return "All the employee mappping done successfully";
         } else {
             return "Failed to save data";
         }
@@ -176,6 +179,12 @@ class Model{
 
     public function employeeUnderMe($employeeId, $departmentId){
         // do something
+        // checks immediate senior and department
+        $where = $employeeId && $departmentId  ? "WHERE immediate_senior='{$employeeId}' AND department_id='{$departmentId}'" : ""; 
+        $sql = "SELECT * FROM employee_mapping {$where}";
+        $result = $this->query($sql);
+        $data = $this->fetchAll($result);
+        return $data;
     }
 
 
